@@ -13,6 +13,8 @@ var {
   TouchableHighlight
   } = React;
 
+var MessageView = require('./MessageView');
+
 function prettyTime(timestamp) {
   var createdDate = new Date(timestamp);
   var distance = Math.round( ( +new Date() - timestamp ) / 60000 );
@@ -53,11 +55,18 @@ var messageList = React.createClass({
       dataSource: this.state.dataSource.cloneWithRows(data)
     })
   },
+  openChat: function (user){
+    this.props.navigator.push({
+      title: `${user.firstName} ${user.lastName}`,
+      component: MessageView,
+      passProps: { user }
+    });
+  },
   renderRow: function (person){
     var time = prettyTime(person.lastMessage.timestamp);
     return (
       <View>
-        <TouchableHighlight>
+        <TouchableHighlight onPress={ this.openChat.bind(this, person.user) }>
           <View>
             <View style={ styles.row }>
               <Image source={ { uri: person.user.picture } } style={ styles.cellImage } />

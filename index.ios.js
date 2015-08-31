@@ -1,53 +1,68 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
+
 var {
   AppRegistry,
   StyleSheet,
   Text,
   View,
+  TabBarIOS,
+  StatusBarIOS
 } = React;
 
+var FaceMashTab = require('./tabs/FaceMash');
+
 var FaceMash = React.createClass({
+  getInitialState() {
+    return {
+      selectedTab: 'faceMash'
+    }
+  },
+  changeTab(tabName) {
+    // StatusBarIOS.setStyle(tabName === 'faceMash' ? 1 : 0);
+    this.setState({
+      selectedTab: tabName
+    });
+  },
   render: function() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <TabBarIOS>
+        <TabBarIOS.Item
+          title="FaceMash"
+          icon={ require('image!facemash') }
+          onPress={ () => this.changeTab('faceMash') }
+          selected={ this.state.selectedTab === 'faceMash' }>
+          <FaceMashTab />
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Messages"
+          icon={ require('image!messages') }
+          onPress={ () => this.changeTab('messages') }
+          selected={ this.state.selectedTab === 'messages' }>
+          <View style={ styles.pageView }>
+            <Text>Messages</Text>
+          </View>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Settings"
+          icon={ require('image!settings') }
+          onPress={ () => this.changeTab('settings') }
+          selected={ this.state.selectedTab === 'settings' }>
+          <View style={ styles.pageView }>
+            <Text>Settings</Text>
+          </View>
+        </TabBarIOS.Item>
+      </TabBarIOS>
     );
   }
 });
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  pageView: {
+    backgroundColor: '#fff',
+    flex: 1
+  }
 });
 
 AppRegistry.registerComponent('FaceMash', () => FaceMash);
